@@ -18,7 +18,7 @@ public class Application extends javafx.application.Application {
 
         Scene scene = new Scene(fxmlLoader.load());
 
-        stage.setTitle("Sample Supershop POS Application!!");
+        stage.setTitle("Sample Supershop POS Application");
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();

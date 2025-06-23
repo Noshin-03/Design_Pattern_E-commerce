@@ -13,5 +13,5 @@
     <TextField promptText="email" />
     <PasswordField promptText="password" />
     <Button onAction="#login" text="Login" />
-    <Button layoutX="89.0" layoutY="154.0" onAction="#onGotoHomePageButtonClick" text="Back to home" />
+    <Button layoutX="89.0" layoutY="154.0" onAction="#onGotoHomePageButtonClick" text="Go Back to home" />
 </VBox>

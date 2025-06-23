@@ -50,12 +50,9 @@ public class ProductController {
 
     @FXML
     public void initialize() {
-        // Spinner setup
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, 1);
         quantitySpinner.setValueFactory(valueFactory);
 
-        // Delay loading values until product is injected
-        // This will only show sample product unless real data is set from outside
         if (name == null) {
             name = "Sample T-Shirt";
             price = "$19.99";
