@@ -11,6 +11,6 @@
 
     <Label fx:id="welcomeText" />
     <DatePicker promptText="Enter Date of Sales" />
-    <Button mnemonicParsing="false" text="New Button" />
+    <Button mnemonicParsing="false" text="New Button!" />
     <Button fx:id="loginPageButton" onAction="#onGotoLoginPageButtonClick" text="Go to Login Page" />
 </VBox>
