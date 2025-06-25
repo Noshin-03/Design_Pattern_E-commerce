@@ -18,7 +18,6 @@ public class ProductController {
         this.stage = stage;
     }
 
-    // UI Elements from product-detail.fxml
     @FXML
     private Label productName;
 
@@ -34,18 +33,15 @@ public class ProductController {
     @FXML
     private Spinner<Integer> quantitySpinner;
 
-    // Product data placeholders (simulate a real model)
     private String name;
     private String price;
     private String description;
     private String imagePath;
 
-    // Call this method from outside to inject product data
-    public void setProductDetails(String name, String price, String description, String imagePath) {
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.imagePath = imagePath;
+    private ProductController selectedProduct;
+
+    public void setProduct(ProductController product) {
+        this.selectedProduct = product;
     }
 
     @FXML
@@ -60,7 +56,6 @@ public class ProductController {
             imagePath = "file:resources/images/sample.png"; // Adjust path
         }
 
-        // Populate fields
         productName.setText(name);
         productPrice.setText(price);
         productDescription.setText(description);

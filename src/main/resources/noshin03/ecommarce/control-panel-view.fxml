@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="noshin03.ecommarce.controller.ControlPanelController"
+      alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+    <Label text="Admin Control Panel" style="-fx-font-size: 18px;" />
+    <Button text="📦 View Product List" onAction="#goToProductList" />
+    <Button text="📄 View Order List" onAction="#goToOrderList" />
+    <Button text="👥 View Customer List" onAction="#goToCustomerList" />
+    <Button text="🛠️ Admin Tools (Seed DB)" onAction="#goToAdminTools" />
+    <Button text="🏠 Go Back to Home" onAction="#goBackHome" />
+</VBox>

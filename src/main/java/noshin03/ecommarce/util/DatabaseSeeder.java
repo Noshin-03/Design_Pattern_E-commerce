@@ -1,131 +1,118 @@
 package noshin03.ecommarce.util;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 
 public class DatabaseSeeder {
-    public static void main(String[] args) {
 
-        try
-                (
-                        // create a database connection
-                        Connection connection = DriverManager.getConnection("jdbc:sqlite:dp.db");
-                        Statement statement = connection.createStatement();
-                ) {
+    public static void seed() {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:dp.db");
+             Statement statement = connection.createStatement()) {
 
-            // Drop existing tables
             statement.executeUpdate("DROP TABLE IF EXISTS order_items;");
             statement.executeUpdate("DROP TABLE IF EXISTS orders;");
             statement.executeUpdate("DROP TABLE IF EXISTS products;");
             statement.executeUpdate("DROP TABLE IF EXISTS users;");
             statement.executeUpdate("DROP TABLE IF EXISTS customers;");
 
-            // Create customers table
             statement.executeUpdate("""
-                        CREATE TABLE customers (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            name VARCHAR(100) NOT NULL,
-                            email VARCHAR(100) NOT NULL
-                        );
+                    CREATE TABLE customers (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name VARCHAR(100) NOT NULL,
+                        email VARCHAR(100) NOT NULL
+                    );
                     """);
 
-            // Create users table
             statement.executeUpdate("""
-                        CREATE TABLE users (
-                                  id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                  name VARCHAR(100) NOT NULL,
-                                  email VARCHAR(100) NOT NULL,
-                                  type VARCHAR(100) NOT NULL,
-                                  password VARCHAR(255) NOT NULL
-                              );
+                    CREATE TABLE users (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name VARCHAR(100) NOT NULL,
+                        email VARCHAR(100) NOT NULL,
+                        type VARCHAR(100) NOT NULL,
+                        password VARCHAR(255) NOT NULL
+                    );
                     """);
 
-            // Create products table
             statement.executeUpdate("""
-                        CREATE TABLE products (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            name VARCHAR(100) NOT NULL,
-                            price REAL NOT NULL
-                        );
+                    CREATE TABLE products (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name VARCHAR(100) NOT NULL,
+                        price REAL NOT NULL,
+                        imagePath TEXT,
+                        description TEXT
+                    );
                     """);
 
-            // Create orders table with foreign key to customers
             statement.executeUpdate("""
-                        CREATE TABLE orders (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            customer_id INT NOT NULL,
-                            date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                            status VARCHAR(50) NOT NULL,
-                            FOREIGN KEY (customer_id) REFERENCES customers (id)
-                        );
+                    CREATE TABLE orders (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        customer_id INT NOT NULL,
+                        date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        status VARCHAR(50) NOT NULL,
+                        FOREIGN KEY (customer_id) REFERENCES customers (id)
+                    );
                     """);
 
-
-            // Create order_items table with foreign keys to orders and products
             statement.executeUpdate("""
-                        CREATE TABLE order_items (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            order_id INT NOT NULL,
-                            product_id INT NOT NULL,
-                            quantity INT NOT NULL,
-                            FOREIGN KEY (order_id) REFERENCES orders (id),
-                            FOREIGN KEY (product_id) REFERENCES products (id)
-                        );
+                    CREATE TABLE order_items (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        order_id INT NOT NULL,
+                        product_id INT NOT NULL,
+                        quantity INT NOT NULL,
+                        FOREIGN KEY (order_id) REFERENCES orders (id),
+                        FOREIGN KEY (product_id) REFERENCES products (id)
+                    );
                     """);
 
-
-            // Insert data into users (if still needed separately)
             String samplePass = BCrypt.hashpw("qwer1234", BCrypt.gensalt());
+
             statement.executeUpdate(String.format("""
-                        INSERT INTO users (id, name, email, type, password) VALUES
-                        (1, 'Admin One', 'admin1@example.com', 'admin', '%s'),
-                        (2, 'Employee One', 'emp1@example.com', 'employee', '%s');
+                    INSERT INTO users (id, name, email, type, password) VALUES
+                    (1, 'Admin One', 'admin1@example.com', 'admin', '%s'),
+                    (2, 'Employee One', 'emp1@example.com', 'employee', '%s');
                     """, samplePass, samplePass));
 
-
-            // Insert data into customers
             statement.executeUpdate("""
-                        INSERT INTO customers (id, name, email) VALUES
-                        (1, 'John Doe', 'john@gmail.com'),
-                        (2, 'Jane Smith', 'jane@gmail.com');
+                    INSERT INTO customers (id, name, email) VALUES
+                    (1, 'John Doe', 'john@gmail.com'),
+                    (2, 'Jane Smith', 'jane@gmail.com');
                     """);
 
-            // Insert data into products table
             statement.executeUpdate("""
-                        INSERT INTO products (name, price) VALUES
-                        ('Product A', 19.99),
-                        ('Product B', 9.99),
-                        ('Product C', 29.99),
-                        ('Product D', 15.49),
-                        ('Product E', 42.00);
+                    INSERT INTO products (name, price, imagePath, description) VALUES
+                    ('Red T-Shirt', 19.99, 'file:resources/images/red.png', 'Comfortable red cotton T-shirt'),
+                    ('Blue Jeans', 39.99, 'file:resources/images/jeans.png', 'Slim-fit stretchable blue jeans'),
+                    ('Running Shoes', 59.99, 'file:resources/images/shoes.png', 'Lightweight running shoes'),
+                    ('Leather Wallet', 25.50, 'file:resources/images/wallet.png', 'Genuine leather wallet'),
+                    ('Wrist Watch', 75.00, 'file:resources/images/watch.png', 'Water-resistant analog watch');
                     """);
 
-
-            // Insert data into orders
             statement.executeUpdate("""
-                        INSERT INTO orders (customer_id, date, status) VALUES
-                        (1, '2023-10-01 10:00:00', 'shipped'),
-                        (2, '2023-10-02 11:00:00', 'pending'),
-                        (1, '2023-10-03 15:30:00', 'delivered');
+                    INSERT INTO orders (customer_id, date, status) VALUES
+                    (1, '2023-10-01 10:00:00', 'shipped'),
+                    (2, '2023-10-02 11:00:00', 'pending'),
+                    (1, '2023-10-03 15:30:00', 'delivered');
                     """);
 
-            // Insert data into order_items
             statement.executeUpdate("""
-                        INSERT INTO order_items (order_id, product_id, quantity) VALUES
-                        (1, 1, 2),  -- 2 units of Product A for Order 1
-                        (1, 2, 1),  -- 1 unit of Product B for Order 1
-                        (2, 3, 3),  -- 3 units of Product C for Order 2
-                        (3, 4, 2),  -- 2 units of Product D for Order 3
-                        (3, 5, 1);  -- 1 unit of Product E for Order 3
+                    INSERT INTO order_items (order_id, product_id, quantity) VALUES
+                    (1, 1, 2),
+                    (1, 2, 1),
+                    (2, 3, 3),
+                    (3, 4, 2),
+                    (3, 5, 1);
                     """);
 
-            System.out.println("Database setup completed successfully.");
-
+            System.out.println("✅ Database seeded successfully!");
+            System.out.println("📦 Products: 5 | 👥 Customers: 2 | 📄 Orders: 3");
 
         } catch (SQLException e) {
-            // if the error message is "out of memory",
-            // it probably means no database file is found
             e.printStackTrace(System.err);
         }
+    }
+
+    public static void main(String[] args) {
+        seed();
     }
 }
