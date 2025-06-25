@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="noshin03.ecommarce.controller.ProductController"
+      spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+    <Label text="Add New Product" />
+    <TextField fx:id="productNameField" promptText="Product Name" />
+    <TextField fx:id="productPriceField" promptText="Price" />
+    <TextArea fx:id="productDescriptionField" promptText="Description" />
+    <Button text="Save Product" onAction="#onSaveProductClick" />
+</VBox>
